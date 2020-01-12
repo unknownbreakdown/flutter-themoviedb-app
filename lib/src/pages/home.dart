@@ -3,6 +3,8 @@ import 'package:themoviedb_app/src/providers/movies.dart';
 import 'package:themoviedb_app/src/widgets/card_swiper.dart';
 
 class HomePage extends StatelessWidget {
+  final _moviesProvider = MoviesProvider();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,19 +22,33 @@ class HomePage extends StatelessWidget {
       body: Container(
         child: Column(
           children: <Widget>[
-            _buildCardSwiper(),
+            _buildCardSwiper(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCardSwiper() {
-    final moviesProvider = MoviesProvider();
-    moviesProvider.getNowPlaying();
+  Widget _buildCardSwiper(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
 
-    return CardSwiper(
-      movies: [1,2,3,4,5,6],
+    return FutureBuilder(
+      future: _moviesProvider.getNowPlaying(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          return CardSwiper(
+            movies: snapshot.data,
+          );
+        } else {
+          return Container(
+            width: screenSize.width,
+            height: screenSize.height * 0.5,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+      },
     );
   }
 }

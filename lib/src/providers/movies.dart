@@ -23,7 +23,7 @@ class MoviesProvider {
       }
       return movies;
     } else {
-      return [];
+      return null;
     }
   }
 }

@@ -47,6 +47,14 @@ class Movie {
     overview = json['overview'];
     releaseDate = json['release_date'];
   }
+
+  getPosterUrl() {
+    if (posterPath == null) {
+      return 'https://pngimage.net/wp-content/uploads/2018/06/no-image-available-png-3.png';
+    } else {
+      return 'https://image.tmdb.org/t/p/w600_and_h900_bestv2$posterPath';
+    }
+  }
 }
 
 // class Movies {
