@@ -8,6 +8,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _moviesProvider.getPopular();
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -67,12 +69,13 @@ class HomePage extends StatelessWidget {
             style: Theme.of(context).textTheme.subhead,
           ),
           SizedBox(height: 5.0),
-          FutureBuilder(
-            future: _moviesProvider.getPopular(),
+          StreamBuilder(
+            stream: _moviesProvider.popularStream,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 return CardReel(
                   movies: snapshot.data,
+                  loadNextPage: _moviesProvider.getPopular,
                 );
               } else {
                 return Container(
