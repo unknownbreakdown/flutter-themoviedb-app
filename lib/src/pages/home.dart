@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:themoviedb_app/src/providers/movies.dart';
+import 'package:themoviedb_app/src/widgets/card_reel.dart';
 import 'package:themoviedb_app/src/widgets/card_swiper.dart';
 
 class HomePage extends StatelessWidget {
@@ -21,17 +22,17 @@ class HomePage extends StatelessWidget {
       ),
       body: Container(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            _buildCardSwiper(context),
-            _buildFooterCards(context),
+            _implementCardSwiper(context),
+            _implementCardReel(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCardSwiper(BuildContext context) {
+  Widget _implementCardSwiper(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
     return FutureBuilder(
@@ -54,7 +55,9 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildFooterCards(BuildContext context) {
+  _implementCardReel(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+
     return Container(
       width: double.infinity,
       child: Column(
@@ -62,6 +65,25 @@ class HomePage extends StatelessWidget {
           Text(
             "Popular Movies",
             style: Theme.of(context).textTheme.subhead,
+          ),
+          SizedBox(height: 5.0),
+          FutureBuilder(
+            future: _moviesProvider.getPopular(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                return CardReel(
+                  movies: snapshot.data,
+                );
+              } else {
+                return Container(
+                  width: screenSize.width,
+                  height: screenSize.height * 0.3,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+            },
           ),
         ],
       ),
