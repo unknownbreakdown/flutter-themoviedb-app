@@ -21,8 +21,10 @@ class HomePage extends StatelessWidget {
       ),
       body: Container(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             _buildCardSwiper(context),
+            _buildFooterCards(context),
           ],
         ),
       ),
@@ -49,6 +51,20 @@ class HomePage extends StatelessWidget {
           );
         }
       },
+    );
+  }
+
+  Widget _buildFooterCards(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      child: Column(
+        children: <Widget>[
+          Text(
+            "Popular Movies",
+            style: Theme.of(context).textTheme.subhead,
+          ),
+        ],
+      ),
     );
   }
 }
